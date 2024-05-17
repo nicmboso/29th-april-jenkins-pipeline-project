@@ -15,23 +15,23 @@ AWS account, AWS CLI, Git, Terraform
 Deployment Steps:
 1. Clone the Application repo
 
-2. Navigate to the Project directory to access the application:
+2. Navigate to the Project directory to access the application:  
 cd Jenkins-pipeline-Project
 
 3. Set up the resources with terraform in main.tf file
    
 4. Ensure newrelic.yml file is updated with the following variables:
 
-#!bin/bash
-license_key: YOUR_LICENSE_KEY
-agent_enabled: true
-app_name: YOUR_APP_NAME
+#!bin/bash  
+license_key: YOUR_LICENSE_KEY  
+agent_enabled: true  
+app_name: YOUR_APP_NAME  
 
-5. Run Terraform commands to initialize (to download the necessary providers or plugins with bash) and review the resources planned for deployment using bash:
-#!bin/bash
-terraform init
-terrraform plan -var-file my-credentials.tfvars
-terraform apply
+5. Run Terraform commands to initialize (to download the necessary providers or plugins with bash) and review the resources planned for deployment using bash:  
+#!bin/bash  
+terraform init  
+terrraform plan -var-file my-credentials.tfvars  
+terraform apply  
 
 6. Set up SonarQube for bugs, vulnerabilities, and code quality checks
 
