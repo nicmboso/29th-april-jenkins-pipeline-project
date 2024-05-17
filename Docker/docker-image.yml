@@ -1,0 +1,25 @@
+---
+ - hosts: localhost
+   become: true
+   tasks:
+
+
+   - name: Download WAR file from Nexus repository
+     get_url:
+       url: http://admin:admin123@${aws_instance.nexus.public_ip}:8081/repository/nexus-repo/Petclinic/spring-petclinic/1.0/spring-petclinic-1.0.war
+       dest: /opt/docker
+
+   - name: create docker image from pet Adoption war file
+     command: docker build -t testapp .
+     args:
+       chdir: /opt/docker
+
+   - name: Add tag to image
+     command: docker tag testapp cloudhight/testapp
+
+   - name: login to dockerhub
+     command: docker login -u cloudhight -p CloudHight_Admin123@
+
+   - name: push image to docker hub
+     command: docker push cloudhight/testapp
+     ignore_errors: yes

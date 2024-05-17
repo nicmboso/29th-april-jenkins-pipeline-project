@@ -1,0 +1,25 @@
+---
+ - hosts: docker_host
+   become: true
+
+   tasks:
+   - name: login to dockerhub
+     command: docker login -u cloudhight -p CloudHight_Admin123@
+
+   - name: Stop any container running
+     command: docker stop testAppContainer
+     ignore_errors: yes
+
+   - name: Remove stopped container
+     command: docker rm testAppContainer
+     ignore_errors: yes
+
+   - name: Remove docker image
+     command: docker rmi cloudhight/testapp
+     ignore_errors: yes
+
+   - name: Pull docker image from dockerhub
+     command: docker pull cloudhight/testapp
+
+   - name: Create container from pet adoption image
+     command: docker run -it -d --name testAppContainer -p 8080:8080 cloudhight/testapp
