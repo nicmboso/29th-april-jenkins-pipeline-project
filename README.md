@@ -1,6 +1,6 @@
 # Jenkins-Pipeline-Project
 
-Introduction:
+Introduction:  
 This project aims to create and deploy a Pet Adoption application written in Java on Docker containers and ensuring the application runs in a highly available, scalable, self-healing environment on AWS. The resources are deployed on AWS through Terraform code. The codes can be found on the team’s GitHub repo used for collaboration. Below gives the steps to the Terraform code used in this project to deploy the resources on AWS.
 
 Project Architecture:
