@@ -13,13 +13,13 @@ Prerequisites:
 AWS account, AWS CLI, Git, Terraform
 
 Deployment Steps:
-1. Clone the App repo:
-git clone https://github.com/CloudHight/Jenkins-pipeline-Project.git
+1. Clone the Application repo
 
 2. Navigate to the Project directory to access the application:
 cd Jenkins-pipeline-Project
 
 3. Set up the resources with terraform in main.tf file
+   
 4. Ensure newrelic.yml file is updated with the following variables:
 
 #!bin/bash
