@@ -4,7 +4,8 @@ Introduction:
 This project aims to create and deploy a Pet Adoption application written in Java on Docker containers and ensuring the application runs in a highly available, scalable, self-healing environment on AWS. The resources are deployed on AWS through Terraform code. The codes can be found on the team’s GitHub repo used for collaboration. Below gives the steps to the Terraform code used in this project to deploy the resources on AWS.
 
 Project Architecture:
-![29th-April-Jenkins-Pipeline-Project-EU-Team](https://github.com/nicmboso/29th-april-jenkins-pipeline-project/assets/160390032/6bca85c0-b7e2-41ce-a2a5-4699ed799ef8)
+![29th-april-jenkins-pipeline-project-day-team](https://github.com/nicmboso/29th-april-jenkins-pipeline-project/assets/160390032/0d074891-ef35-4786-a55f-95023eb53c97)
+
 
 Tech Stack Used:
 AWS, GitHub, Terraform, Maven, Jenkins, Ansible, Docker, SonarQube, Nexus, Bastion Host, NewRelic.
