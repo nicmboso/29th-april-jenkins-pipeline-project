@@ -361,11 +361,11 @@ resource "aws_instance" "docker-server" {
   subnet_id              = aws_subnet.prv-subnet1.id
   key_name               = aws_key_pair.public_key.id
   vpc_security_group_ids = [aws_security_group.docker-SG.id]
-  user_data              = templatefile("./user-data/docker-script.sh",{
-  privatekey = tls_private_key.keypair.key_name,
-  newrelic-license-key = var.newrelic-license-key,
-  acct-id = var.newrelic-acct-id
-})
+  user_data = templatefile("./user-data/docker-script.sh", {
+    privatekey           = tls_private_key.keypair.private_key_pem,
+    newrelic-license-key = var.newrelic-license-key,
+    acct-id              = var.newrelic-acct-id
+  })
 
   tags = {
     Name = "${local.name}-docker"
@@ -374,34 +374,34 @@ resource "aws_instance" "docker-server" {
 
 # create bastion host server
 resource "aws_instance" "bastion" {
-  ami                         = var.red_hat
+  ami                         = var.ubuntu
   instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.public-subnet1.id
+  subnet_id                   = aws_subnet.pub-subnet1.id
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.bastion-ansible.id]
+  vpc_security_group_ids      = [aws_security_group.bastion-ansible-SG.id]
   key_name                    = aws_key_pair.public_key.id
-  user_data                   = templatefile("./user-data/bastion-script.sh",{
-  privatekey = tls_private_key.keypair.key_name,
-})
+  user_data = templatefile("./user-data/bastion-script.sh", {
+    privatekey = tls_private_key.keypair.private_key_pem
+  })
   tags = {
     Name = "${local.name}-bastion"
   }
 }
 #create ansible server
 resource "aws_instance" "ansible-server" {
-  ami                         = var.red_hat
-  instance_type               = "t2.micro"
-  vpc_security_group_ids      = [aws_security_group.bastion-ansible.id]
-  subnet_id                   = aws_subnet.public-subnet2.id
-  associate_public_ip_address = true
-  key_name                    = aws_key_pair.public_key.key_name
-  user_data                   = templatefile("./user-data/ansible-script.sh",{
-  privatekey = tls_private_key.keypair.key_name,
-  Docker-host-ip = aws_instance.docker-server.private_ip,
-  Nexus-ip = aws_instance.nexus.private_ip,
-  newrelic-license-key = var.newrelic-license-key,
-  acct-id = var.newrelic-acct-id
-})
+  ami                    = var.red_hat
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.bastion-ansible-SG.id]
+  subnet_id              = aws_subnet.pub-subnet1.id
+  # associate_public_ip_address = true
+  key_name = aws_key_pair.public_key.key_name
+  user_data = templatefile("./user-data/ansible-script.sh", {
+    privatekey           = tls_private_key.keypair.private_key_pem,
+    Docker-host-ip       = aws_instance.docker-server.private_ip,
+    Nexus-ip             = aws_instance.nexus.private_ip,
+    newrelic-license-key = var.newrelic-license-key,
+    acct-id              = var.newrelic-acct-id
+  })
   tags = {
     name = "${local.name}-ansible-server"
   }
@@ -411,7 +411,7 @@ resource "aws_instance" "nexus" {
   ami                         = var.red_hat
   instance_type               = "t2.medium"
   associate_public_ip_address = true
-  subnet_id                   = aws_subnet.public-subnet1.id
+  subnet_id                   = aws_subnet.pub-subnet1.id
   key_name                    = aws_key_pair.public_key.id
   vpc_security_group_ids      = [aws_security_group.nexus-SG.id]
   user_data                   = ("./user-data/nexus-script.sh")
@@ -421,7 +421,7 @@ resource "aws_instance" "nexus" {
 }
 resource "aws_db_subnet_group" "db_subnet" {
   name       = "db-subnet-group"
-  subnet_ids = [aws_subnet.private-subnet1.id, aws_subnet.private-subnet2.id]
+  subnet_ids = [aws_subnet.prv-subnet1.id, aws_subnet.prv-subnet2.id]
 
   tags = {
     Name = "${local.name}-db-sg"
@@ -431,7 +431,7 @@ resource "aws_db_subnet_group" "db_subnet" {
 resource "aws_db_instance" "petclinic-db" {
   identifier             = var.db-identifier
   db_subnet_group_name   = aws_db_subnet_group.db_subnet.name
-  vpc_security_group_ids = [aws_security_group.mysql-sg.id]
+  vpc_security_group_ids = [aws_security_group.mysql-SG.id]
   allocated_storage      = 10
   db_name                = var.db-name
   engine                 = "mysql"
