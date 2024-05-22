@@ -1,6 +1,7 @@
 variable "region" {}
 variable "profile" {}
 variable "red_hat" {}
+variable "ubuntu" {}
 variable "vpc_cidr" {}
 variable "pub-sub1_cidr" {}
 variable "pub-sub2_cidr" {}
